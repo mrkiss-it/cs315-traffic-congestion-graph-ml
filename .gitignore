@@ -1,0 +1,14 @@
+# Temporary office files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
