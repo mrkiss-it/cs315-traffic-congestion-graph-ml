@@ -1,0 +1,44 @@
+# ==============================================================================
+# CS315.G12.LT.TTNT — Nhóm 14
+# Dự báo lan truyền sóng ùn tắc TP.HCM kết hợp thời tiết & Traffic Knowledge Graph
+# Yêu cầu: Python 3.10+ (tương thích máy trạm cá nhân và Google Colab CPU/T4)
+# Cài đặt: pip install -r requirements.txt
+# ==============================================================================
+
+# --- Xử lý dữ liệu & API (Tuần 4–5) ---
+numpy>=1.26.0,<2.3.0
+pandas>=2.2.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+h5py>=3.10.0
+
+# --- Đồ thị mạng lưới đường & Bản đồ GIS (Tuần 4–7) ---
+osmnx>=2.0.0
+networkx>=3.2.0
+geopandas>=1.0.0
+shapely>=2.0.0
+folium>=0.17.0
+
+# --- Lựa chọn đặc trưng & Mô hình học máy Baseline (Tuần 4–6) ---
+scikit-learn>=1.5.0
+scipy>=1.12.0
+imbalanced-learn>=0.12.0
+lightgbm>=4.3.0
+xgboost>=2.0.0
+
+# --- Giải thích mô hình (XAI) & Trực quan hóa / Demo (Tuần 4–7) ---
+shap>=0.46.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+streamlit>=1.38.0
+
+# --- Notebook Jupyter ---
+ipykernel>=6.29.0
+jupyter>=1.0.0
+
+# --- Mở rộng Tuần 6–7: Deep Graph (ST-GNN) & AI Agent (Google Colab / cài bổ sung khi cần) ---
+# torch>=2.2.0
+# torch-geometric>=2.5.0
+# langchain>=0.3.0
+# llama-index>=0.12.0
+

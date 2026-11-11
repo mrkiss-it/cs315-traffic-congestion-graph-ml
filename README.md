@@ -34,11 +34,18 @@
 ### CẤU TRÚC HỒ SƠ ĐỒ ÁN TRONG THƯ MỤC
 
 ```text
+├── 📂 01_data_sample/                            <-- Đồ thị OSMnx (15–25 nút), Open-Meteo, lịch triều Phú An, GIS & mock data
+├── 📂 02_feature_selection/                      <-- Data Contract & module lọc đặc trưng (Variance/Pearson/Chi2/PCA đối chứng)
+├── 📂 03_models_evaluation/                      <-- Module TimeSeriesSplit, Baseline ML / ST-GNN, Recall/F1/PR-AUC & SHAP
+├── 📂 04_knowledge_graph_demo/                   <-- Ontology Traffic Knowledge Graph (NetworkX) & AI Agent cảnh báo lộ trình
+├── 📂 05_report_slides/                          <-- Literature Survey, biên bản góp ý Thầy Dũng, Báo cáo, Slide & Video demo
 ├── 📄 De_Cuong_Chi_Tiet_Do_An_May_Hoc_Nang_Cao.docx  <-- [BẢN IN/NỘP THẦY] Đề cương chi tiết (Word chuẩn CITD/UIT)
 ├── 📊 Ke_Hoach_Thuc_Hien_Do_An_May_Hoc_Nang_Cao.xlsx  <-- [BẢN KẾ HOẠCH NỘP] Tiến độ 6 tuần SV/GV đánh giá (Excel)
 ├── 📝 De_Cuong_Chi_Tiet_Do_An_May_Hoc_Nang_Cao.md    <-- Bản thuyết minh Markdown 7 mục nội dung đầy đủ
-├── 📋 DS_Nhom_CS315.G12.LT.TTNT.xlsx               <-- Dòng đăng ký chuẩn đề tài trên file chung của lớp
-└── 📖 README.md                                    <-- Bản hướng dẫn & tổng quan hồ sơ đồ án (File này)
+├── 🗓️ Ke_Hoach_Thuc_Hien_Tuan_4.md                   <-- Phân công chi tiết Tuần 4 (11/11 – 17/11/2026) & sơ đồ phụ thuộc
+├── 📦 requirements.txt                               <-- Danh sách thư viện Python 3.10+ (tương thích local & Google Colab)
+├── 🙈 .gitignore                                     <-- Loại trừ .venv/, .env, .ipynb_checkpoints/, __pycache__/ & file tạm Office
+└── 📖 README.md                                      <-- Bản hướng dẫn & tổng quan hồ sơ đồ án (File này)
 ```
 
 ---
