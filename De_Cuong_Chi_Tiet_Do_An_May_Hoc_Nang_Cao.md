@@ -23,11 +23,11 @@
 
 | STT | Họ và Tên Sinh Viên | Mã Số Sinh Viên | Lớp Sinh Hoạt | Vai Trò Đảm Trách Trong Đồ Án |
 | :---: | :--- | :---: | :---: | :--- |
-| 1 | **Trần Hoàng Hôn** | `26410046` | AI2026 | **Trưởng nhóm / Project Manager & Đồ thị giao thông:** Quản trị tiến độ, điều phối liên môn, trích xuất cấu trúc đồ thị mạng lưới đường OSMnx khu vực Hàng Xanh, chuẩn hóa bài toán và hoàn thiện báo cáo tổng hợp. |
-| 2 | **Nguyễn Duy Khang** | `26410055` | AI2026 | **Kỹ sư Dữ liệu & Lựa chọn đặc trưng (Feature Selection):** Tiếp nhận dữ liệu sạch từ pipeline *Big Data*, triển khai lọc đặc trưng (Pearson $r$, Variance Threshold, One-Hot, $\chi^2$, PCA) và quản trị bộ dữ liệu thực nghiệm. |
+| 1 | **Trần Hoàng Hôn** | `26410046` | AI2026 | **Trưởng nhóm / Project Manager & Đồ thị giao thông:** Quản trị tiến độ, điều phối kỹ thuật, trích xuất cấu trúc đồ thị mạng lưới đường OSMnx khu vực Hàng Xanh, chuẩn hóa bài toán và hoàn thiện báo cáo tổng hợp. |
+| 2 | **Nguyễn Duy Khang** | `26410055` | AI2026 | **Kỹ sư Dữ liệu & Lựa chọn đặc trưng (Feature Selection):** Xây dựng pipeline thu thập & làm sạch 2 nhánh dữ liệu (`METR-LA` đối chứng & Hàng Xanh: `OSMnx`, thời tiết `Open-Meteo`, lịch triều Phú An, giao thông mô phỏng tăng cường), triển khai lọc đặc trưng (Pearson $r$, Variance Threshold, One-Hot, $\chi^2$, nhánh đối chứng PCA) và quản trị bộ dữ liệu thực nghiệm. |
 | 3 | **Phạm Thành Trung** | `26410141` | AI2026 | **Kỹ sư AI / Mô hình hóa Machine Learning:** Thiết kế và huấn luyện các mô hình dự báo lan truyền sóng ùn tắc (Baseline ML: Random Forest, LightGBM/XGBoost vs. mô hình đồ thị), thẩm định độ đo rủi ro (`Recall`, `F1-Score`, `TimeSeriesSplit`). |
 | 4 | **Vũ Văn Duy** | `26410031` | AI2026 | **Kỹ sư Giải thích mô hình (XAI) & Trực quan hóa:** Phân tích mức độ đóng góp đặc trưng bằng SHAP values / Feature Importance (khắc phục tính hộp đen), xây dựng bản đồ nhiệt trực quan hóa sự lan truyền sóng ùn tắc. |
-| 5 | **Hoàng Cao Sơn** | `25730061` | AI2026 | **Kỹ sư Đồ thị tri thức (GraphRAG) & AI Agent:** *(Nhánh nghiên cứu độc lập)* Khảo sát tổng quan tài liệu, thiết kế Schema *Traffic Knowledge Graph* (Nút – Tuyến – Điểm ngập – Cảnh báo) và xây dựng demo Agent hỗ trợ tư vấn lộ trình. |
+| 5 | **Hoàng Cao Sơn** | `25730061` | AI2026 | **Kỹ sư Đồ thị tri thức (GraphRAG) & AI Agent:** *(Nhánh nghiên cứu song song)* Khảo sát tổng quan tài liệu, thiết kế Schema *Traffic Knowledge Graph* (Nút – Tuyến – Điểm ngập – Cảnh báo) và xây dựng demo Agent hỗ trợ tư vấn lộ trình. |
 
 ---
 
@@ -58,33 +58,27 @@ Hơn nữa, theo định hướng giảng dạy của **Thầy Đặng Việt D�
 4. Áp dụng SHAP values và Feature Importance để minh bạch hóa mô hình (khắc phục tính hộp đen), chỉ rõ mức độ tác động của biến mưa/ngập tới việc kích hoạt sóng ùn tắc.
 5. Tổ chức trạng thái nút giao thành Đồ thị tri thức (*Traffic Knowledge Graph*) và thử nghiệm Agent thông minh hỗ trợ truy vấn cảnh báo lộ trình thay thế (bám sát nội dung Chặng 3 của Thầy Dũng).
 
-#### Sơ đồ tổng quan giải pháp liên môn:
+#### Sơ đồ tổng quan kiến trúc giải pháp (Tự chủ trong CS315):
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│      SƠ ĐỒ TỔNG QUAN HỆ THỐNG LIÊN MÔN: DỮ LIỆU LỚN ──> MÁY HỌC NÂNG CAO (CS315)        │
+│           SƠ ĐỒ TỔNG QUAN HỆ THỐNG ĐỒ ÁN CS315 - MÁY HỌC NÂNG CAO (ĐỘC LẬP)            │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 
- [ MÔN PHÂN TÍCH DỮ LIỆU LỚN - Thầy Tân ]          [ MÔN MÁY HỌC NÂNG CAO - Thầy Dũng ]
+ [ TẦNG 1: THU THẬP & LÀM SẠCH DỮ LIỆU ]           [ TẦNG 2: CHỌN LỌC ĐẶC TRƯNG ]
  ┌──────────────────────────────────────┐          ┌──────────────────────────────────────┐
- │ 1. Thu thập & Trích xuất Đồ thị     │          │ 3. Chọn lọc đặc trưng thông minh     │
- │    - OSMnx: Nút & Đường Hàng Xanh    │          │    - Filter: Variance Threshold      │
- │    - API Thời tiết Open-Meteo        │          │    - Pearson r (|r| >= 0.5)          │
- └──────────────────┬───────────────────┘          │    - Categorical: One-Hot & Chi2     │
-                    │                              └──────────────────┬───────────────────┘
-                    ▼                                                 ▼
- ┌──────────────────────────────────────┐          ┌──────────────────────────────────────┐
- │ 2. Pipeline Xử lý Dữ liệu lớn       │          │ 4. Mô hình hóa Lan truyền sóng       │
- │    - Kiểm tra nguyên lý GIGO         │          │    - Baseline ML: RF / LightGBM      │
- │    - Xử lý Missing & Chuẩn hóa       │          │    - Spatial-Temporal Graph Model    │
- │    - Xuất Clean Data (CSV / Parquet) │───────>  │    - Tối ưu Recall & F1-Score        │
- └──────────────────────────────────────┘          └──────────────────┬───────────────────┘
+ │ 1. Đồ thị & Dữ liệu đầu vào (Python) │          │ 3. Chọn lọc đặc trưng thông minh     │
+ │    - OSMnx: Cụm Hàng Xanh (15–25 nút)│          │    - Số: Variance Threshold, Pearson │
+ │    - Thời tiết Open-Meteo & Triều PA │───────>  │    - Phân loại: One-Hot & Chi2 (5.99)│
+ │    - Tập chuẩn METR-LA (đối chứng)   │          │    - Nhánh đối chứng giảm chiều PCA  │
+ │    - Hàng Xanh (mô phỏng tăng cường) │          └──────────────────┬───────────────────┘
+ └──────────────────────────────────────┘                             │
                                                                       ▼
-                                                   ┌──────────────────────────────────────┐
-                                                   │ 5. Giải thích mô hình (XAI) & KG    │
-                                                   │    - SHAP values (chống Hộp đen)     │
-                                                   │    - Traffic Knowledge Graph (KG)    │
-                                                   │    - AI Agent cảnh báo lộ trình      │
-                                                   └──────────────────────────────────────┘
+ ┌──────────────────────────────────────┐          ┌──────────────────────────────────────┐
+ │ 5. Giải thích mô hình (XAI) & KG    │          │ 4. Mô hình hóa Lan truyền sóng       │
+ │    - SHAP values (chống Hộp đen)     │ <─────── │    - Baseline ML: RF / LightGBM      │
+ │    - Traffic Knowledge Graph (KG)    │          │    - Spatial-Temporal Graph Model    │
+ │    - AI Agent cảnh báo lộ trình      │          │    - TimeSeriesSplit + Recall / F1   │
+ └──────────────────────────────────────┘          └──────────────────────────────────────┘
 ```
 
 ---
@@ -108,10 +102,10 @@ Xây dựng thành công hệ thống học máy có khả năng mô hình hóa 
   * Nghiên cứu cơ sở toán học của các thuật toán chọn đặc trưng: Hệ số tương quan Pearson, ngưỡng phương sai, kiểm định độc lập Chi-bình phương ($\chi^2$), phân tích thành phần chính (PCA).
   * Nghiên cứu lý thuyết biểu diễn đồ thị không gian - thời gian (Spatial-Temporal Graph), ma trận kề có hướng $A \in \mathbb{R}^{N \times N}$ và cơ chế lan truyền tín hiệu trên đồ thị.
   * Nghiên cứu phương pháp giải thích mô hình SHAP (Shapley Additive exPlanations) dựa trên lý thuyết trò chơi hợp tác.
-* **Phương pháp thu thập dữ liệu & liên thông Big Data:**
-  * Dữ liệu cấu trúc đường: Sử dụng thư viện `OSMnx` trích xuất đồ thị mạng lưới đường thực tế tại khu vực Hàng Xanh – Bình Thạnh (tọa độ nút, chiều dài đoạn đường, số làn xe, tốc độ tối đa).
-  * Dữ liệu thời tiết: Thu thập từ Open-Meteo Historical Weather API (lượng mưa theo giờ $mm/h$, độ ẩm, nhiệt độ) kết hợp lịch triều cường trạm Phú An.
-  * Tận dụng 100% pipeline làm sạch GIGO, lọc ngoại lai và điền khuyết từ môn *Phân tích dữ liệu lớn* chuyển giao sang dạng bảng chuẩn.
+* **Phương pháp thu thập và tiền xử lý dữ liệu (Tự chủ 2 nhánh dữ liệu trong CS315):**
+  * **Nhánh 1 — Tập chuẩn công khai đối chứng (`METR-LA`):** Sử dụng tập dữ liệu cảm biến giao thông công khai `METR-LA` (kèm ma trận kề đồ thị và chuỗi vận tốc đo đạc thực tế) để kiểm chứng khách quan hiệu năng các mô hình Baseline ML và ST-GNN trước khi áp dụng cho kịch bản TP.HCM.
+  * **Nhánh 2 — Kịch bản đặc thù TP.HCM (Cụm Hàng Xanh):** Sử dụng thư viện `OSMnx` trích xuất đồ thị mạng lưới đường thực tế tại khu vực Hàng Xanh – Bình Thạnh (tọa độ nút, chiều dài đoạn đường, số làn xe, tốc độ tối đa); thu thập thời tiết thật từ `Open-Meteo Historical Weather API` (lượng mưa theo giờ $mm/h$, độ ẩm, nhiệt độ) kết hợp bảng lịch mực nước triều cường trạm Phú An trùng mốc ngày; sau đó xây dựng chuỗi lưu lượng Hàng Xanh mô phỏng tăng cường theo phân phối thực tế (giờ cao điểm, mưa ngập).
+  * **Tiền xử lý thống nhất bằng Python (`Pandas`, `Scikit-learn`):** Kiểm tra khuyết thiếu, lọc ngoại lai, quy đổi múi giờ `UTC+7`, đồng bộ bước thời gian 15 phút và chuẩn hóa thành dạng bảng sạch.
 * **Phương pháp thực nghiệm mô hình hóa:**
   * Xây dựng kịch bản chia dữ liệu chống rò rỉ thông tin tương lai: Sử dụng `TimeSeriesSplit` (Walk-forward Validation) thay vì K-Fold ngẫu nhiên để tôn trọng tính tuần tự thời gian.
   * Huấn luyện mô hình cơ sở (Baseline ML): Random Forest, LightGBM, XGBoost trên tập đặc trưng đã chọn lọc.
@@ -127,7 +121,7 @@ Xây dựng thành công hệ thống học máy có khả năng mô hình hóa 
 
 * **Nội dung 1: Khảo sát tổng quan, thu thập dữ liệu và trích xuất đồ thị mạng lưới đường HCMC**
   * *Thực hiện cái gì:* Trích xuất đồ thị mạng lưới đường khu vực cụm Hàng Xanh ($G = (V, E)$ gồm $\approx 15 - 25$ nút giao và các đoạn đường kết nối); thu thập chuỗi thời gian vận tốc lưu thông và dữ liệu thời tiết mưa ngập.
-  * *Thực hiện như thế nào:* Dùng `OSMnx` và `NetworkX` trên Python để lấy tọa độ và ma trận khoảng cách; kết nối API thời tiết Open-Meteo; tiếp nhận dữ liệu đã làm sạch từ pipeline môn Big Data.
+  * *Thực hiện như thế nào:* Dùng `OSMnx` và `NetworkX` trên Python để lấy tọa độ và ma trận khoảng cách cụm Hàng Xanh; kết nối API thời tiết `Open-Meteo` và số hóa bảng lịch triều cường trạm Phú An; xây dựng bộ dữ liệu giao thông Hàng Xanh mô phỏng tăng cường theo phân phối thực tế đồng thời chuẩn hóa tập cảm biến thật `METR-LA` bằng `Pandas`/`Scikit-learn` để đối chứng thực nghiệm.
   * *Dự kiến kết quả:* Ma trận kề đồ thị chuẩn hóa $A$, danh sách nút $V$, tập cạnh $E$ và bộ dữ liệu giao thông - thời tiết dạng bảng sạch sẵn sàng cho bước chọn đặc trưng.
 * **Nội dung 2: Lựa chọn đặc trưng thông minh (Feature Selection) và mã hóa biến phân loại**
   * *Thực hiện cái gì:* Loại bỏ các đặc trưng dư thừa và tĩnh; đo lường tương quan tuyến tính giữa các biến thời tiết, vận tốc với mức độ ùn tắc; mã hóa các biến phân loại và giảm chiều dữ liệu.
@@ -155,7 +149,7 @@ Xây dựng thành công hệ thống học máy có khả năng mô hình hóa 
 ### 5. Giới hạn của đề tài
 
 * **Giới hạn không gian địa lý:** Nghiên cứu tập trung thử nghiệm trên mạng lưới đường đô thị thuộc **Cụm giao thông Ngã tư Hàng Xanh và các trục xuyên tâm lân cận** (thuộc Quận Bình Thạnh, TP.HCM), bao gồm các tuyến: Xô Viết Nghệ Tĩnh, Đinh Bộ Lĩnh, Bạch Đằng, Điện Biên Phủ, Nguyễn Gia Trí (D2), Ung Văn Khiêm. Không mở rộng toàn bộ 24 quận huyện để đảm bảo chất lượng đo kiểm sâu.
-* **Giới hạn về dữ liệu:** Dữ liệu huấn luyện sử dụng tập dữ liệu giao thông lịch sử kết hợp dữ liệu cào tự động và mô phỏng tăng cường dựa trên phân phối thực tế của giao thông TP.HCM; chuỗi thời tiết lấy từ trạm đo vệ tinh Open-Meteo và dữ liệu triều cường trạm Phú An.
+* **Giới hạn về dữ liệu:** Do TP.HCM chưa có bộ cảm biến giao thông công khai liên tục theo từng nút giao, đồ án triển khai song song 2 nhánh nguồn: (1) Tập cảm biến giao thông công khai **`METR-LA`** để kiểm chứng khách quan hiệu năng thuật toán trên chuỗi đo đạc thực tế; và (2) Bộ dữ liệu kịch bản **Cụm Hàng Xanh** kết hợp khung hình học thật (`OSMnx`), khí tượng vệ tinh thật (`Open-Meteo`), bảng lịch triều cường trạm Phú An và chuỗi lưu lượng mô phỏng tăng cường theo phân phối giờ cao điểm – mưa ngập TP.HCM.
 * **Giới hạn phần cứng & môi trường thực thi:** Toàn bộ pipeline huấn luyện mô hình, trích xuất đặc trưng và đồ thị tri thức được thiết kế để chạy mượt mà trên môi trường máy trạm cá nhân hoặc **Google Colab miễn phí (GPU T4 / CPU)**, không đòi hỏi cụm máy chủ chuyên dụng đắt tiền.
 * **Giới hạn chức năng:** Hệ thống tập trung vào bài toán **Dự báo lan truyền sóng ùn tắc & Giải thích nguyên nhân & Cảnh báo lộ trình tĩnh/động**; không can thiệp trực tiếp vào việc điều khiển chu kỳ đèn tín hiệu giao thông thực địa.
 
@@ -196,7 +190,7 @@ Nhóm áp dụng mô hình phân công song song tăng tốc (*Fast-track Sprint
 | :---: | :---: | :--- | :--- | :--- | :---: |
 | **Tuần 3** | 04/11 – 10/11/2026 | Khởi tạo đề tài, viết Thuyết minh Đề cương chi tiết (MD) & Lập kế hoạch thực hiện đồ án (XLSX); chuẩn hóa đề tài lên file lớp `DS_Nhom_CS315.G12.LT.TTNT.xlsx`. | **Trần Hoàng Hôn** (Lead) & Cả nhóm | • File Đề cương chi tiết (MD)<br>• File Kế hoạch thực hiện (XLSX)<br>• Dòng đăng ký chuẩn trên sheet lớp | **0%** |
 | **Tuần 4** | 11/11 – 17/11/2026 | • Trích xuất đồ thị OSMnx cụm Hàng Xanh (Nodes, Edges, Ma trận kề).<br>• Dựng khung trực quan hóa bản đồ GIS (Folium) kiểm tra tọa độ nút thực địa.<br>• Thiết lập pipeline thử nghiệm Baseline ML & hàm đo kiểm Recall/F1.<br>• Khảo sát tài liệu nghiên cứu quốc tế & thiết kế Schema Đồ thị tri thức.<br>• Tham vấn Thầy Dũng trực tiếp cuối buổi học 13/11. | • **Trần Hoàng Hôn**<br>• **Nguyễn Duy Khang**<br>• **Phạm Thành Trung**<br>• **Vũ Văn Duy**<br>• **Hoàng Cao Sơn** | • File ma trận đồ thị Hàng Xanh<br>• Bản đồ GIS trực quan tọa độ nút<br>• Mock pipeline huấn luyện & hàm Recall<br>• Bản thảo Schema Traffic KG<br>• Biên bản góp ý của Thầy | **0%** |
-| **Tuần 5** | 18/11 – 24/11/2026 | • Tiếp nhận dữ liệu sạch Big Data & hoàn thành dứt điểm Feature Selection (Variance Threshold, Pearson $r$, One-Hot, $\chi^2$, PCA).<br>• Huấn luyện và đánh giá các mô hình Baseline ML (Random Forest, LightGBM, XGBoost) dự báo lan truyền sau $15' - 30' - 60'$.<br>• Dựng cơ sở dữ liệu Đồ thị tri thức mẫu trên NetworkX. | • **Nguyễn Duy Khang**<br>• **Phạm Thành Trung**<br>• **Hoàng Cao Sơn**<br>• **Vũ Văn Duy** | • Notebook `01_Feature_Selection.ipynb`<br>• Dataset đã chọn lọc đặc trưng<br>• Trọng số mô hình Baseline (.pkl/.json)<br>• Bảng tương quan thống kê & Recall ban đầu | **0%** |
+| **Tuần 5** | 18/11 – 24/11/2026 | • Chuẩn hóa 2 nhánh dữ liệu sạch bằng Python (tập cảm biến thật `METR-LA` đối chứng & kịch bản Hàng Xanh: `OSMnx` + `Open-Meteo` + lịch triều cường Phú An + giao thông mô phỏng tăng cường) & hoàn thành dứt điểm Feature Selection (Variance Threshold, Pearson $r$, One-Hot, $\chi^2$, nhánh đối chứng PCA).<br>• Huấn luyện và đánh giá các mô hình Baseline ML (Random Forest, LightGBM, XGBoost) dự báo lan truyền sau $15' - 30' - 60'$.<br>• Dựng cơ sở dữ liệu Đồ thị tri thức mẫu trên NetworkX. | • **Nguyễn Duy Khang**<br>• **Phạm Thành Trung**<br>• **Hoàng Cao Sơn**<br>• **Vũ Văn Duy** | • Notebook `01_Feature_Selection.ipynb`<br>• Dataset đã chọn lọc đặc trưng<br>• Trọng số mô hình Baseline (.pkl/.json)<br>• Bảng tương quan thống kê & Recall ban đầu | **0%** |
 | **Tuần 6** | 25/11 – 01/12/2026 | • Nâng cấp mô hình đồ thị / Ensemble học máy, tối ưu độ nhạy Recall $\ge 85\%$ & F1-Score cho các pha kẹt xe nghiêm trọng.<br>• Áp dụng SHAP values (TreeExplainer) bóc tách định lượng tác động của lượng mưa & triều cường (khắc phục tính hộp đen).<br>• Thử nghiệm AI Agent gọi công cụ (*Tool-calling*) tra cứu lộ trình thay thế né kẹt. | • **Phạm Thành Trung**<br>• **Vũ Văn Duy**<br>• **Hoàng Cao Sơn**<br>• **Trần Hoàng Hôn** | • Notebook `02_Model_Training.ipynb`<br>• Biểu đồ SHAP Summary & Force Plot<br>• Module AI Agent thử nghiệm<br>• Bản thảo Chương 2 & 3 Báo cáo | **0%** |
 | **Tuần 7** | 02/12 – 08/12/2026 | • Xây dựng bản đồ nhiệt trực quan hóa động thái lan truyền sóng ùn tắc (Folium / Web App Streamlit).<br>• Hoàn thiện toàn diện module AI Agent tương tác tự nhiên hỏi - đáp lộ trình.<br>• Hoàn thành 100% nội dung quyển Báo cáo đồ án môn học (Word/PDF 40–50 trang).<br>• Đóng gói mã nguồn sạch sẽ lên GitHub nhóm có file `README.md`. | • **Vũ Văn Duy**<br>• **Hoàng Cao Sơn**<br>• **Trần Hoàng Hôn**<br>• **Phạm Thành Trung**<br>• **Nguyễn Duy Khang** | • Bản đồ nhiệt trực quan chạy mượt<br>• Notebook `03_Traffic_KG_Agent_Demo.ipynb`<br>• Toàn văn Báo cáo đồ án hoàn chỉnh<br>• Kho GitHub chuẩn hóa kèm dữ liệu mẫu | **0%** |
 | **Tuần 8** | 09/12 – 15/12/2026 | • Thiết kế Slide thuyết trình chỉn chu (25–30 slide).<br>• Quay video clip demo kịch bản sóng ùn tắc Hàng Xanh khi trời mưa lớn.<br>• **BÁO CÁO VÀ NGHIỆM THU ĐỒ ÁN HOÀN TẤT VỚI GIẢNG VIÊN (ThS. Đặng Việt Dũng).**<br>• Nộp trọn bộ hồ sơ (Báo cáo Word/PDF + Slide + Source Code + Video Demo). | **Cả nhóm 5 thành viên** *(Trần Hoàng Hôn điều phối)* | • File Slide báo cáo (.pptx / .pdf)<br>• Video demo hoàn chỉnh<br>• Toàn bộ sản phẩm nộp trên Drive lớp<br>• **HOÀN THÀNH 100% ĐỒ ÁN MÔN HỌC** | **0%** |

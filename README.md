@@ -14,7 +14,7 @@
 * **Đơn vị đào tạo:** Khoa Khoa học Máy tính / Hệ thống Thông tin – Trường Đại học Công nghệ Thông tin (ĐHQG-HCM)
 * **Giảng viên hướng dẫn:** ThS. Đặng Việt Dũng
 * **Học phần:** `CS315.G12.LT.TTNT` (Máy học nâng cao) – Học kỳ 1, Năm học 2026 – 2027
-* **Mô hình triển khai:** Liên thông đa môn (*"Cái Output của Big Data là Input của Máy học nâng cao"*)
+* **Mô hình triển khai:** Tự chủ hoàn toàn trong nội bộ `CS315` (thu thập – làm sạch – chọn lọc đặc trưng – mô hình hóa – giải thích XAI – Knowledge Graph khép kín bằng Python/Colab)
 * **Kế hoạch tiến độ:** Fast-track Sprint 6 tuần (Tuần 3 – Tuần 8), **Hoàn tất & Nghiệm thu tại Tuần 8 (15/12/2026)**.
 
 ---
@@ -24,10 +24,10 @@
 | STT | Họ và Tên | MSSV | Vai Trò Chuyên Trách | Đầu Việc Chính Trong Dự Án (Fast-track) |
 | :---: | :--- | :---: | :--- | :--- |
 | 1 | **Trần Hoàng Hôn** | `26410046` | **Trưởng nhóm / PM & Đồ thị giao thông** | Quản trị tiến độ WBS, trích xuất đồ thị OSMnx cụm Ngã tư Hàng Xanh (Nodes, Edges, Ma trận kề), chuẩn hóa bài toán và điều phối báo cáo tổng thể |
-| 2 | **Nguyễn Duy Khang** | `26410055` | **Kỹ sư Dữ liệu & Feature Selection** | Tiếp nhận dữ liệu sạch Big Data; thực thi pipeline Feature Selection 4 bước (Variance Threshold, Pearson r, One-Hot, Chi2, PCA) bám sát Buổi 2 |
+| 2 | **Nguyễn Duy Khang** | `26410055` | **Kỹ sư Dữ liệu & Feature Selection** | Chuẩn hóa 2 nhánh dữ liệu sạch (tập cảm biến thực tế `METR-LA` đối chứng & bộ Hàng Xanh: `OSMnx`, `Open-Meteo`, lịch triều Phú An, giao thông mô phỏng tăng cường); thực thi pipeline Feature Selection (Variance Threshold, Pearson r, One-Hot, Chi2, nhánh đối chứng PCA) bám sát Buổi 2 |
 | 3 | **Phạm Thành Trung** | `26410141` | **Kỹ sư AI & Mô hình hóa học máy** | Huấn luyện Baseline ML (Random Forest, LightGBM, XGBoost) & ST-GNN; tối ưu hàm loss phạt class_weight='balanced' hướng tới Recall >= 85% cho pha kẹt nặng |
 | 4 | **Vũ Văn Duy** | `26410031` | **Kỹ sư Giải thích XAI & GIS Heatmap** | Khởi tạo khung GIS (Folium) kiểm tra tọa độ nút thực địa từ Tuần 4; phân tích SHAP values bóc tách biến mưa/ngập; dựng bản đồ nhiệt trực quan hóa sóng ùn tắc |
-| 5 | **Hoàng Cao Sơn** | `25730061` | **Kỹ sư Đồ thị tri thức & AI Agent** | Khảo sát nghiên cứu quốc tế từ Tuần 4 (luồng độc lập Big Data); thiết kế Schema Traffic Knowledge Graph & phát triển module AI Agent hỏi - đáp lộ trình |
+| 5 | **Hoàng Cao Sơn** | `25730061` | **Kỹ sư Đồ thị tri thức & AI Agent** | Khảo sát nghiên cứu quốc tế từ Tuần 4 (luồng song song độc lập); thiết kế Schema Traffic Knowledge Graph & phát triển module AI Agent hỏi - đáp lộ trình |
 
 ---
 
@@ -43,21 +43,23 @@
 
 ---
 
-### SƠ ĐỒ KIẾN TRÚC GIẢI PHÁP LIÊN THÔNG (BIG DATA ➔ ADVANCED ML)
+### SƠ ĐỒ KIẾN TRÚC GIẢI PHÁP (TỰ CHỦ TRONG CS315)
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ TẦNG DỮ LIỆU LỚN (MÔN PHÂN TÍCH DỮ LIỆU LỚN - BIG DATA ANALYTICS)           │
-│ GPS xe bus / Camera PTZ / IoT Khí tượng (Mưa, Thủy triều)                   │
-│   ──► Apache Kafka Streaming ──► Apache Spark Clean / Aggregation           │
-│   ──► Parquet Time-series Dataset (Lưu lượng, Vận tốc, Vũ lượng mưa)        │
+│ TẦNG THU THẬP & TIỀN XỬ LÝ DỮ LIỆU (PYTHON / PANDAS - ĐỘC LẬP TRONG CS315)  │
+│ • Nhánh 1 (Benchmark thật): Tập cảm biến giao thông chuẩn mở METR-LA        │
+│ • Nhánh 2 (Kịch bản TP.HCM): Đồ thị OSMnx (Hàng Xanh 15–25 nút)             │
+│   + Open-Meteo (mưa/ẩm/nhiệt) + Lịch triều Phú An + Lưu lượng mô phỏng      │
+│   ──► Pandas Clean / Imputation / Time Alignment (UTC+7, bước 15 phút)      │
 └──────────────────────────────────────┬──────────────────────────────────────┘
-                                       │ (Dữ liệu sạch liên thông)
+                                       │ (Dữ liệu bảng sạch chuẩn hóa)
                                        ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ TẦNG ĐẶC TRƯNG & ĐỒ THỊ (MÔN MÁY HỌC NÂNG CAO - ADVANCED MACHINE LEARNING)   │
-│ 1. Trích xuất mạng lưới đường Hàng Xanh (OSMnx: Nodes, Edges, Ma trận kề)  │
-│ 2. Feature Selection: Variance Threshold ➔ Pearson r ➔ One-Hot ➔ Chi2 ➔ PCA │
+│ TẦNG ĐẶC TRƯNG & ĐỒ THỊ (FEATURE ENGINEERING & SELECTION)                   │
+│ 1. Trích xuất mạng lưới đường Hàng Xanh (OSMnx: Nodes, Edges, Ma trận kề)   │
+│ 2. Feature Selection: Variance Threshold / Pearson r ➔ One-Hot + Chi2 (>5.99)│
+│    (Nhánh PCA tách riêng để đối chứng, giữ tên gốc cho SHAP TreeExplainer)  │
 └──────────────────────────────────────┬──────────────────────────────────────┘
                                        │
                                        ▼
@@ -96,7 +98,7 @@
 | :---: | :---: | :--- | :--- | :---: |
 | **Tuần 3** | 04/11 – 10/11 | Khởi tạo đề tài, viết Thuyết minh Đề cương chi tiết (MD), Kế hoạch thực hiện (XLSX) & chuẩn hóa dòng đăng ký file lớp. | Trần Hoàng Hôn (Lead) & Cả nhóm | **0%** |
 | **Tuần 4** | 11/11 – 17/11 | Trích xuất đồ thị OSMnx cụm Hàng Xanh; dựng khung GIS (Folium) kiểm tra tọa độ thực địa; mock pipeline ML & hàm đo Recall; khảo sát quốc tế & Schema Traffic KG; xin Thầy Dũng góp ý 13/11. | Hôn, Khang, Trung, Duy, Sơn | **0%** |
-| **Tuần 5** | 18/11 – 24/11 | Tiếp nhận dữ liệu sạch Big Data; dứt điểm Feature Selection (Variance, Pearson, One-Hot, Chi2, PCA); huấn luyện Baseline ML (RF, LightGBM, XGBoost) dự báo sau 15'-30'-60'; dựng Traffic KG mẫu. | Khang, Trung, Sơn, Duy | **0%** |
+| **Tuần 5** | 18/11 – 24/11 | Hoàn thiện 2 nhánh dữ liệu sạch (`METR-LA` đối chứng & Hàng Xanh: `OSMnx` + `Open-Meteo` + lịch triều Phú An + mô phỏng tăng cường); dứt điểm Feature Selection (Variance, Pearson, One-Hot, Chi2, nhánh PCA); huấn luyện Baseline ML (RF, LightGBM, XGBoost) dự báo sau 15'-30'-60'; dựng Traffic KG mẫu. | Khang, Trung, Sơn, Duy | **0%** |
 | **Tuần 6** | 25/11 – 01/12 | Nâng cấp mô hình đồ thị/Ensemble tối ưu Recall $\ge 85\%$ & F1-Score; áp dụng SHAP values bóc tách biến mưa ngập; thử nghiệm AI Agent gọi tool tra cứu lộ trình. | Trung, Duy, Sơn, Hôn | **0%** |
 | **Tuần 7** | 02/12 – 08/12 | Xây dựng bản đồ nhiệt trực quan hóa lan truyền sóng (Folium); hoàn thiện AI Agent; hoàn thành 100% nội dung Báo cáo Word/PDF (40–50 trang); đóng gói GitHub repo. | Duy, Sơn, Hôn, Trung, Khang | **0%** |
 | **Tuần 8** | 09/12 – 15/12 | Thiết kế Slide thuyết trình (25–30 slide); quay video clip demo kịch bản sóng ùn tắc khi mưa; BÁO CÁO VÀ NGHIỆM THU ĐỒ ÁN VỚI THẦY DŨNG; nộp trọn bộ hồ sơ. | Cả nhóm 5 thành viên (Hôn điều phối) | **0%** |
